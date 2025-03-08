@@ -1,73 +1,23 @@
 <main>
   <p>People List</p>
   <div class="container">
-    <form id="peopleform" class="barcontainer">
-      <input class="addpeople" type="text" placeholder="abhi" name="name" required />
-      <input class="age" type="text" placeholder="12" name="age" required />
-      <select class="mfm" id="gender" name="gender">
-        <option>male</option>
+    <form #peopleForm="ngForm" (ngSubmit)="addPerson(peopleForm)" id="formContainer">
+      <input type="text" placeholder="Name" name="name" id="name" ngModel required />
+      <input type="text" placeholder="Age" name="age" id="age" required />
+      <select name="gender" ngModel required>
+        <option>Male</option>
         <option>Female</option>
       </select>
-      <input class="mobile" type="text" placeholder="999988888" name="mobile" required />
-      <button type="submit" class="add">Add</button>
+      <input type="text" placeholder="Mobile" name="mobile" id="mobile" ngModel required />
+      <button type="submit">Add</button>
     </form>
-    <div id="peoplecontainer" class="peoplecontainer"></div>
+
+    <div *ngFor="let person of people">
+      <p>Name: {{ person.name }}</p>
+      <p>Age: {{ person.age }}</p>
+      <p>Gender: {{ person.gender }}</p>
+      <p>Mobile: {{ person.mobile }}</p>
+    </div>
   </div>
 </main>
-
-<script>
-  const form = document.getElementById('peopleform');
-  const peoplecontainer = document.getElementById('peoplecontainer');
-
-  async function fetchPeople() {
-  try {
-    const res = await fetch('/users');
-    if (!res.ok) throw new Error('Failed to fetch');
-    const people = await res.json();
-    console.log('Fetched people:', people);
-    peoplecontainer.innerHTML = '';
-    people.forEach(person => {
-      const div = document.createElement('div');
-      div.innerHTML = `
-        <p>Name: ${person.name}</p>
-        <p>Age: ${person.age}</p>
-        <p>Gender: ${person.gender}</p>
-        <p>Mobile: ${person.mobile}</p>
-        <button onclick="editPeople('${person._id}')">Edit</button>
-        <button onclick="deletePeople('${person._id}')">Delete</button>`;
-      peoplecontainer.appendChild(div);
-    });
-  } catch (err) {
-    console.error('Error fetching people:', err);
-  }
-}
-
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const name = form.name.value.trim();
-  const age = form.age.value.trim();
-  const mobile = form.mobile.value.trim();
-  const gender = form.gender.value;
-
-  if (!name || !age || !mobile) {
-    console.error('All fields are required.');
-    return;
-  }
-
-  try {
-    const res = await fetch('http://localhost:3000/users', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, age, gender, mobile }),
-    });
-    if (!res.ok) throw new Error('Failed to add person');
-    console.log('Person added:', await res.json());
-    fetchPeople();
-  } catch (err) {
-    console.error('Error adding person:', err);
-  }
-});
-
-fetchPeople();
-
-</script>
+```                                                                       

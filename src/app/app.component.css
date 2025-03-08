@@ -1,101 +1,94 @@
 /* General container styling */
 .container {
-    margin: 2px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 1rem;
+    padding: 2rem;
     max-width: 100%;
-}
-
-/* Heading */
-p {
+  }
+  
+  /* Heading */
+  p {
+    font-size: 1.8rem;
+    font-weight: bold;
     text-align: center;
-    font-size: 1.5rem;
-}
-
-/* Bar container */
-.barcontainer {
-    margin-top: 4rem;
-    width: 80%;
-    max-width: 600px;
-    height: 3rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Form styling */
+  #formContainer {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
+    gap: 1rem;
+    width: 100%;
+    max-width: 500px;
+    padding: 4rem;
+    border: 2px solid #333;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Input and select fields */
+  input {
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+  }
+select{
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 33rem;
 }
+  
+  /* Add button */
+  button {
+    padding: 0.75rem;
+    font-size: 1.2rem;
+    background-color:gray;
 
-/* Input field */
-.addpeople,.age,.mobile{
-    flex: 1;
-    padding: 0.5rem;
-    width:50%;
-    border-radius: 0.25rem;
-    font-size: 1rem;
-}
-.mfm{
-    flex:1;
-    width: 53%;
-    padding: 0.5rem;
-    border-radius: 0.25rem;
-    font-size: 1rem;
-}
-/* Add button */
-.add {
-    width: 6rem;
-    padding: 0.5rem;
-    border-radius: 0.25rem;
-    font-size: 1rem;
-    white-space: nowrap;
-    box-shadow: 2px 2px 2px 2px rgba(0, 11, 3, 0.2);
-    
-}
-
-.add:hover {
+    color: white;
+    border: none;
+    border-radius: 5px;
     cursor: pointer;
-    background-color: lightgreen;
-}
-
-.peoplecontainer {
-    margin-top: 16rem;
-    border: 2px solid red;
-    width: 80%;
-    max-width: 600px;
-    height: 12rem;
-    overflow-y: auto;
-}
-
-@media (max-width: 768px) {
-    .barcontainer {
-        width: 100%;
-    }
-
-    .addpeople {
-        font-size: 0.9rem;
-    }
-
-    .add {
-        font-size: 0.9rem;
-        width: 5rem;
-    }
-}
-
-@media (max-width: 480px) {
+  }
+  
+  button:hover {
+    background-color:gray;
+    box-shadow: 2px 2px 2px 2px black;
+  }
+  
+  /* People list */
+  div[ngFor] {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    max-width: 500px;
+    background-color: #f9f9f9;
+  }
+  
+  div[ngFor] p {
+    font-size: 1rem;
+    margin: 0.5rem 0;
+  }
+  
+  /* Responsive design */
+  @media (max-width: 600px) {
     p {
-        font-size: 1.25rem;
+      font-size: 1.5rem;
     }
-
-    .barcontainer {
-        width: 100%;
+  
+    #formContainer {
+      padding: 1rem;
     }
-
-    .addpeople {
-        font-size: 0.8rem;
+  
+    input, select, button {
+      font-size: 1rem;
     }
-
-    .add {
-        font-size: 0.8rem;
-        width: 4.5rem;
-    }
-}
+  }
+  
