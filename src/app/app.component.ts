@@ -40,7 +40,7 @@ export class AppComponent {
       } else {
         await axios.post('http://localhost:3000/users', { name, age, gender, mobile });
       }
-      form.reset();
+      form.resetForm();
       console.log('Person saved successfully');
       this.fetchPeople();
     } catch (err) {
@@ -48,9 +48,13 @@ export class AppComponent {
     }
   }
 
-  editPerson(person: any) {
-    this.editingPerson = person;
-  }
+  formData = { name: '', age: '', gender: '', mobile: '' };
+
+editPerson(person: any) {
+  this.editingPerson = person;
+  this.formData = { ...person }; // Clone data to avoid direct binding issues
+}
+
 
   async deletePerson(id: string) {
     try {
