@@ -19,14 +19,10 @@ mongoose.connect(process.env.MONGO_URI, {
   console.error('MongoDB connection error:', err);
 });
 
-// Add a user
+// Add user
 app.post('/users', async (req, res) => {
   try {
-    const { name, age, mobile, gender } = req.body;
-    if (!name || !age || !mobile || !gender) {
-      return res.status(400).json({ error: 'All fields are required' });
-    }
-    const newUser = new User({ name, age, mobile, gender });
+    const newUser = new User(req.body);
     await newUser.save();
     res.status(201).json(newUser);
   } catch (err) {
@@ -39,6 +35,16 @@ app.get('/users', async (req, res) => {
   try {
     const users = await User.find();
     res.status(200).json(users);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Update user
+app.put('/users/:id', async (req, res) => {
+  try {
+    const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.status(200).json(updatedUser);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

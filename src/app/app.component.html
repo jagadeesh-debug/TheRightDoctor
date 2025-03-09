@@ -1,23 +1,29 @@
 <main>
   <p>People List</p>
-  <div class="container">
-    <form #peopleForm="ngForm" (ngSubmit)="addPerson(peopleForm)" id="formContainer">
-      <input type="text" placeholder="Name" name="name" id="name" ngModel required />
-      <input type="text" placeholder="Age" name="age" id="age" required />
-      <select name="gender" ngModel required>
-        <option>Male</option>
-        <option>Female</option>
-      </select>
-      <input type="text" placeholder="Mobile" name="mobile" id="mobile" ngModel required />
-      <button type="submit">Add</button>
-    </form>
+<div class="container">
+  <form #peopleForm="ngForm" (ngSubmit)="addPerson(peopleForm)" id="formContainer">
+    <input type="text" placeholder="Name" name="name" ngModel [value]="editingPerson?.name || ''" required />
+    <input type="text" placeholder="Age" name="age" ngModel [value]="editingPerson?.age || ''" required />
+    <select name="gender" ngModel [value]="editingPerson?.gender || ''" required>
+      <option>Male</option>
+      <option>Female</option>
+    </select>
+    <input type="text" placeholder="Mobile" name="mobile" ngModel [value]="editingPerson?.mobile || ''" required />
+    <button type="submit">{{ editingPerson ? 'Update' : 'Add' }}</button>
+  </form>
 
-    <div *ngFor="let person of people">
+  <div *ngIf="people.length > 0; else noPeople">
+    <div *ngFor="let person of people" class="person-card">
       <p>Name: {{ person.name }}</p>
       <p>Age: {{ person.age }}</p>
       <p>Gender: {{ person.gender }}</p>
       <p>Mobile: {{ person.mobile }}</p>
+      <button (click)="editPerson(person)">Edit</button>
+      <button (click)="deletePerson(person._id)">Delete</button>
     </div>
   </div>
+</div>
+  <ng-template #noPeople>
+    <p>No people found.</p>
+  </ng-template>
 </main>
-```                                                                       

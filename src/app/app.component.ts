@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import axios from 'axios';
 
 @Component({
   selector: 'app-root',
@@ -10,38 +11,52 @@ import { FormsModule } from '@angular/forms';
 })
 export class AppComponent {
   people: any[] = [];
+  editingPerson: any = null;
 
   async fetchPeople() {
     try {
-      const res = await fetch('http://localhost:3000/users');
-      if (!res.ok) throw new Error('Failed to fetch');
-      this.people = await res.json();
+      const res = await axios.get('http://localhost:3000/users');
+      this.people = res.data;
     } catch (err) {
       console.error('Error fetching people:', err);
     }
   }
 
   async addPerson(form: any) {
-    if (!form.valid) {
-      console.error('All fields are required.');
-      return;
-    }
+    if (!form.valid) return;
 
     const { name, age, gender, mobile } = form.value;
 
     try {
-      const res = await fetch('http://localhost:3000/users', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, age, gender, mobile }),
-      });
-      console.log(res);
-      if (!res.ok) throw new Error('Failed to add person');
-      this.fetchPeople();
+      if (this.editingPerson) {
+        await axios.put(`http://localhost:3000/users/${this.editingPerson._id}`, {
+          name,
+          age,
+          gender,
+          mobile,
+        });
+        this.editingPerson = null; // Reset after editing
+      } else {
+        await axios.post('http://localhost:3000/users', { name, age, gender, mobile });
+      }
       form.reset();
+      console.log('Person saved successfully');
+      this.fetchPeople();
     } catch (err) {
-      console.error('Error adding person:', err);
-      
+      console.error('Error saving person:', err);
+    }
+  }
+
+  editPerson(person: any) {
+    this.editingPerson = person;
+  }
+
+  async deletePerson(id: string) {
+    try {
+      await axios.delete(`http://localhost:3000/users/${id}`);
+      this.fetchPeople();
+    } catch (err) {
+      console.error('Error deleting person:', err);
     }
   }
 
